@@ -1,0 +1,11 @@
+<Project>
+
+	<PropertyGroup>
+		<ModName>AI Items</ModName>
+		<ModFileName>AIItems</ModFileName>
+		<Repository>https://github.com/igoforth/RWAI_Items</Repository>
+		<ModVersion>0.0.1.0</ModVersion>
+		<ProjectGuid>{D25A1DAE-6452-456F-8CFF-FECC7EF1AFFB}</ProjectGuid>
+	</PropertyGroup>
+
+</Project>
