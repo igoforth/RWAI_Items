@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using UnityEngine;
-using Verse;
-
 namespace AIItems;
 
 public partial class AIItemsSettings : ModSettings
