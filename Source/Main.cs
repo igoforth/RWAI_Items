@@ -1,15 +1,10 @@
-﻿global using System;
-global using RimWorld;
-global using UnityEngine;
-global using Verse;
+﻿using System.Collections;
+using System.Collections.Concurrent;
 using HarmonyLib;
+using UnityEngine;
+using Verse;
 
 namespace AIItems;
-
-using System.Collections;
-using System.Collections.Concurrent;
-using System.Threading;
-using System.Threading.Tasks;
 
 [HarmonyPatch(typeof(Current), nameof(Current.Notify_LoadedSceneChanged))]
 [StaticConstructorOnStartup]
@@ -40,76 +35,100 @@ public static class Main
         while (true)
         {
             yield return null;
-            if (!actions.TryDequeue(out Action action))
+            if (actions.TryDequeue(out Action? action))
             {
-                continue;
+                action?.Invoke();
             }
-
-            action();
         }
     }
 
     public static async Task Perform(Action action)
     {
-        bool working = true;
+        TaskCompletionSource<bool> tcs = new();
+
         actions.Enqueue(() =>
         {
-            action();
-            working = false;
+            try
+            {
+                action();
+                tcs.SetResult(true);
+            }
+            catch (Exception ex)
+            {
+                tcs.SetException(ex);
+            }
         });
-        while (working)
+
+        // Process the actions in the queue
+        while (!tcs.Task.IsCompleted)
         {
-            await Task.Delay(200);
+            if (actions.TryDequeue(out Action? queuedAction))
+            {
+                queuedAction();
+            }
+
+            await Task.Delay(200).ConfigureAwait(false);
         }
+
+        _ = await tcs.Task.ConfigureAwait(false);
     }
 
     public static async Task<T> Perform<T>(Func<T> action)
     {
-        T result = default;
-        bool working = true;
+        TaskCompletionSource<T> tcs = new();
+
         actions.Enqueue(() =>
         {
-            result = action();
-            working = false;
+            try
+            {
+                T? result = action();
+                tcs.SetResult(result);
+            }
+            catch (Exception ex)
+            {
+                tcs.SetException(ex);
+            }
         });
-        while (working)
+
+        // Process the actions in the queue
+        while (!tcs.Task.IsCompleted)
         {
-            await Task.Delay(200);
+            if (actions.TryDequeue(out Action? queuedAction))
+            {
+                queuedAction();
+            }
+
+            await Task.Delay(200).ConfigureAwait(false);
         }
 
-        return result;
+        return await tcs.Task.ConfigureAwait(false);
     }
 }
 
 public class AIItemsMod : Mod
 {
     public static CancellationTokenSource onQuit = new();
-    public static AIItemsSettings Settings;
-    public static Mod self;
+    public static AIItemsSettings? Settings;
+    public static Mod? self;
+
+    static AIItemsMod() { }
 
     public AIItemsMod(ModContentPack content)
         : base(content)
     {
+#if DEBUG
+        LogTool.Debug("AIItemsMod: Constructor called");
+#endif
+
         self = this;
         Settings = GetSettings<AIItemsSettings>();
 
-        Harmony harmony = new("net.trojan.rimworld.mod.AICore");
+        Harmony harmony = new("net.trojan.rimworld.mod.AIItems");
         harmony.PatchAll();
 
         LongEventHandler.ExecuteWhenFinished(() =>
         {
-            // This performs any necessary setup when the game is loaded
-
-
-            // Personas.UpdateVoiceInformation();
-            // Tools.ReloadGPTModels();
-            if (Settings.IsConfigured)
-            {
-                // This is the main entry point for the mod
-
-                // Tools.UpdateApiConfigs();
-                // Personas.Add("Player has launched Rimworld and is on the start screen", 0);
-            }
+            if (Settings.IsConfigured) { }
         });
 
         Application.wantsToQuit += () =>
@@ -121,7 +140,8 @@ public class AIItemsMod : Mod
 
     public static bool Running => !onQuit.IsCancellationRequested;
 
-    public override void DoSettingsWindowContents(Rect inRect) => Settings.DoWindowContents(inRect);
+    public override void DoSettingsWindowContents(Rect inRect) =>
+        AIItemsSettings.DoWindowContents(inRect);
 
-    public override string SettingsCategory() => "AI Items";
+    public override string SettingsCategory() => "";
 }

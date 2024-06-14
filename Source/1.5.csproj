@@ -23,7 +23,14 @@
     </PropertyGroup>
 
     <ItemGroup Label="Runtime">
-        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.4.*" />
+        <PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.*" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\AICore\Source\1.5.csproj">
+            <ExcludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</ExcludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </ProjectReference>
     </ItemGroup>
 
 </Project>

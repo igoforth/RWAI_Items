@@ -1,26 +1,52 @@
 <Project>
     <PropertyGroup>
-        <RootNamespace>$(ModFileName)</RootNamespace>
+        <Product>$(ModName)</Product>
         <AssemblyName>$(ModFileName)</AssemblyName>
-        <TargetFrameworks>net472</TargetFrameworks>
-        <LangVersion>latest</LangVersion>
-        <PlatformTarget>x64</PlatformTarget>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-        <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
-        <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
-        <Version>$(ModVersion)</Version>
-        <AssemblyVersion>$(ModVersion)</AssemblyVersion>
-        <FileVersion>$(ModVersion)</FileVersion>
-        <PackageVersion>$(ModVersion)</PackageVersion>
-        <InformationalVersion>$(ModVersion)</InformationalVersion>
+        <RootNamespace>$(ModFileName)</RootNamespace>
         <Company>Trojan</Company>
         <Authors>Ian Goforth</Authors>
         <Copyright>Copyright Ian Goforth</Copyright>
-        <PackageProjectUrl>$(Repository)</PackageProjectUrl>
+
+        <Version>$(ModVersion)</Version>
+        <FileVersion>$(ModVersion)</FileVersion>
+        <PackageVersion>$(ModVersion)</PackageVersion>
+        <AssemblyVersion>$(ModVersion)</AssemblyVersion>
+        <InformationalVersion>$(ModVersion)</InformationalVersion>
+
         <RepositoryUrl>$(Repository)</RepositoryUrl>
-        <Product>$(ModName)</Product>
+        <PackageProjectUrl>$(Repository)</PackageProjectUrl>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+
+        <TargetFrameworks>net472</TargetFrameworks>
+        <PlatformTarget>x64</PlatformTarget>
+
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <WarningsAsErrors>nullable</WarningsAsErrors>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <EnableFileScopedNamespaces>true</EnableFileScopedNamespaces>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <AnalysisMode>AllEnabledByDefault</AnalysisMode>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+        <DebugType>embedded</DebugType>
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+        <Deterministic>true</Deterministic>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
+        <GenerateSupportedRuntime>false</GenerateSupportedRuntime>
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+        <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
+        <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+
+        <CollectCoverage>true</CollectCoverage>
+        <CoverletOutputFormat>opencover</CoverletOutputFormat>
+
+        <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
+        <PolySharpUsePublicAccessibilityForGeneratedTypes>true</PolySharpUsePublicAccessibilityForGeneratedTypes>
     </PropertyGroup>
 
     <ItemGroup>
@@ -40,7 +66,10 @@
 
     <ItemGroup Label="Runtime">
         <PackageReference Include="Lib.Harmony" Version="2.3.3" ExcludeAssets="runtime" />
+        <PackageReference Include="Microsoft.NETCore.Platforms" Version="7.0.4" />
         <PackageReference Include="Microsoft.NETCore.Portable.Compatibility" Version="1.0.1" />
+        <PackageReference Include="PolySharp"
+            Version="1.14.1+a7a92a9ddd050275c91c42b711d22cb41c3fbf3d" />
     </ItemGroup>
 
     <ItemGroup Label="Development">
@@ -52,74 +81,34 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="PolySharp"
-            Version="1.14.1+a7a92a9ddd050275c91c42b711d22cb41c3fbf3d">
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net472"
+            Version="1.0.3">
             <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
         <Reference Include="Newtonsoft.Json">
-            <HintPath>..\Libraries\Newtonsoft.Json.dll</HintPath>
+            <HintPath>..\External\Newtonsoft.Json.dll</HintPath>
         </Reference>
-        <Reference Include="System.Threading.Tasks.Extensions" Aliases="extensions" />
         <Reference Include="netstandard">
             <Private>true</Private>
         </Reference>
     </ItemGroup>
 
-    <!-- <ItemGroup Label="Patches">
-		<None Update="App.config">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</None>
-	</ItemGroup> -->
-
-    <!-- <ItemGroup>
-		<ProjectReference
-			Include="..\External\YetAnotherHttpHandler\src\YetAnotherHttpHandler\YetAnotherHttpHandler.csproj"
-	/>
-	</ItemGroup> -->
-
-    <!-- <ItemGroup>
-		<PackageReference
-			Include="YetAnotherHttpHandler"
-			Version="0.1.*">
-			<HintPath>
-				..\External\Packages</HintPath>
-		</PackageReference>
-	</ItemGroup> -->
-
-    <!-- <ItemGroup Label="Protobufs">
-		<Protobuf Include="..\Protos\*.proto" GrpcServices="Client" />
-	</ItemGroup> -->
-
-    <ItemGroup Label="Protobufs">
-        <AdditionalFiles Include="..\Protos\*.proto" Services="Client" LangVersion="$(LangVersion)" />
-    </ItemGroup>
-
     <ItemGroup>
-        <Compile Remove="$(MSBuildProjectDirectory)\unused\**\*.cs" />
+        <Compile Include="CityHash.cs" />
+        <Compile Include="CompressedDictionary.cs" />
+        <Compile Include="LogTool.cs" />
+        <Compile Include="Main.cs" />
+        <Compile Include="Patches.cs" />
+        <Compile Include="Settings.cs" />
+        <Compile Include="Tasks.cs" />
+        <Compile Include="Tools.cs" />
+        <Compile Include="UX.cs" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Publicize Include="Assembly-CSharp;0Harmony" />
-        <DoNotPublicize
-            Include="0Harmony:System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute" />
-    </ItemGroup>
-
-    <Target Name="CopyPublicized" AfterTargets="Build">
-        <!-- Create an item list of DLLs found in subdirectories of the specified path -->
-        <ItemGroup Condition="'$(Configuration)' == 'Release'">
-            <CustomAssemblies Include="$(IntermediateOutputPath)PublicizedAssemblies\**\*.dll" />
-        </ItemGroup>
-
-        <!-- Copy all collected DLLs to the destination folder -->
-        <Copy SourceFiles="@(CustomAssemblies)" DestinationFolder="$(OutputPath)\shared"
-            SkipUnchangedFiles="true" />
-    </Target>
-
-    <!-- Target to check configuration -->
     <Target Name="CheckConfiguration" BeforeTargets="Build">
         <PropertyGroup>
             <RimWorldVersion>$(MSBuildProjectName)</RimWorldVersion>
@@ -129,8 +118,39 @@
         <Message Text="Configuration: $(Configuration)" Importance="high" />
     </Target>
 
-    <Target Name="GatherInputs" AfterTargets="CopyPublicized">
-        <PropertyGroup Label="ILRepackOutput" Condition="'$(Configuration)' == 'Release'">
+    <ItemGroup>
+        <Publicize Include="Assembly-CSharp;0Harmony;AICore" />
+        <DoNotPublicize
+            Include="0Harmony:System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute;AICore:System.Runtime.CompilerServices.IgnoresAccessChecksToAttribute" />
+    </ItemGroup>
+
+    <Target Name="CopyPublicized" AfterTargets="Build">
+        <ItemGroup>
+            <CustomAssemblies Include="$(IntermediateOutputPath)PublicizedAssemblies\**\*.dll" />
+        </ItemGroup>
+
+        <Copy SourceFiles="@(CustomAssemblies)" DestinationFolder="$(OutputPath)\shared"
+            SkipUnchangedFiles="true" />
+    </Target>
+
+    <Target Name="DeleteNative" AfterTargets="CopyPublicized">
+        <ItemGroup>
+            <NativeItems
+                Include="grpc_csharp_ext.x64.dll;grpc_csharp_ext.x86.dll;libgrpc_csharp_ext.x64.dylib;libgrpc_csharp_ext.x64.so"
+            />
+        </ItemGroup>
+        <Delete Files="@(NativeItems -> '$(OutputPath)%(Filename)%(Extension)')" />
+    </Target>
+
+    <Target Name="DeleteAICore" AfterTargets="DeleteNative">
+        <ItemGroup>
+            <AICoreItems Include="AICore.dll;AICore.pdb;AICore.xml" />
+        </ItemGroup>
+        <Delete Files="@(AICoreItems -> '$(OutputPath)%(Filename)%(Extension)')" />
+    </Target>
+
+    <Target Name="GatherInputs" AfterTargets="DeleteAICore">
+        <PropertyGroup Label="ILRepackOutput">
             <ILRepackOutputPath>..\..\..\$(RimWorldVersion)\Assemblies\</ILRepackOutputPath>
         </PropertyGroup>
         <PropertyGroup Label="ILRepackItems">
@@ -148,7 +168,7 @@
 
     <Target Name="Repack" AfterTargets="GatherInputs"
         Inputs="$(ILRepackExe);@(ILRepackInput);@(ILRepackLib);$(ILRepackOutputPath);$(ILRepackOutput)"
-        Outputs="$(ILRepackOutput)" Condition="'$(Configuration)' == 'Release'">
+        Outputs="$(ILRepackOutput)">
         <PropertyGroup Label="ILRepackArguments">
             <ILRepackExtraArguments>@(ILRepackExtra->'/%(Identity)', ' ')</ILRepackExtraArguments>
             <ILRepackLibrariesArgument>@(ILRepackLib->'/lib:"%(FullPath)"', ' ')</ILRepackLibrariesArgument>
@@ -158,40 +178,60 @@
         <Exec
             Command="$(ILRepackExe) $(ILRepackExtraArguments) $(ILRepackLibrariesArgument) $(ILRepackOutArgument) $(ILRepackInputPrimary) $(ILRepackInArgument)"
             WorkingDirectory="$(OutputPath)" ConsoleToMSBuild="True" />
+
+    </Target>
+
+    <Target Name="CopyDestination" AfterTargets="Repack">
         <Copy Condition="Exists('$(ProjectRuntimeConfigFilePath)')"
             SourceFiles="$(ProjectRuntimeConfigFilePath)"
             DestinationFiles="$(ILRepackOutputPath)$(ProjectRuntimeConfigFileName)"
             SkipUnchangedFiles="True" />
     </Target>
 
-    <Target Name="PostBuildAction" AfterTargets="Repack">
+    <Target Name="PostBuildAction" AfterTargets="CopyDestination">
         <XmlPoke XmlInputPath="$(MSBuildProjectDirectory)\..\About\About.xml"
             Query="//ModMetaData/modVersion" Value="$(ModVersion)" />
         <Message Text="New version: $(ModVersion)" />
     </Target>
 
-    <Target Name="CopyToRimWorld" AfterTargets="PostBuildAction" Condition="'$(MOD_PATH)' != ''">
-        <RemoveDir Directories="$(MOD_PATH)\$(ModFileName)" />
+    <Target Name="ZipMod" AfterTargets="PostBuildAction">
+
+        <PropertyGroup>
+            <BuildDir>..\Build\</BuildDir>
+            <Dir15>..\1.5\</Dir15>
+        </PropertyGroup>
+
         <ItemGroup>
+            <Copy15 Include="..\1.5\**" />
             <CopyAbout Include="..\About\**" />
-            <CopyAssemblies Include="..\Assemblies\**" />
-            <CopyTextures Include="..\Textures\**" />
             <CopyLicense Include="..\LICENSE" />
             <CopyReadme Include="..\README.md" />
         </ItemGroup>
+
+        <MakeDir Directories="$(BuildDir)" Condition="!Exists('%(BuildDir.Identity)')" />
+
+        <Copy SourceFiles="@(Copy15)"
+            DestinationFolder="$(BuildDir)\1.5\%(RecursiveDir)" />
         <Copy SourceFiles="@(CopyAbout)"
-            DestinationFolder="$(MOD_PATH)\$(ModFileName)\About\%(RecursiveDir)" />
-        <Copy SourceFiles="@(CopyAssemblies)"
-            DestinationFolder="$(MOD_PATH)\$(ModFileName)\Assemblies\%(RecursiveDir)" />
-        <Copy SourceFiles="@(CopyTextures)"
-            DestinationFolder="$(MOD_PATH)\$(ModFileName)\Textures\%(RecursiveDir)" />
-        <Copy SourceFiles="@(CopyLicense)" DestinationFolder="$(MOD_PATH)\$(ModFileName)" />
-        <Copy SourceFiles="@(CopyReadme)" DestinationFolder="$(MOD_PATH)\$(ModFileName)" />
+            DestinationFolder="$(BuildDir)\About\%(RecursiveDir)" />
+        <Copy SourceFiles="@(CopyLicense)"
+            DestinationFolder="$(BuildDir)" />
+        <Copy SourceFiles="@(CopyReadme)"
+            DestinationFolder="$(BuildDir)" />
+
+        <ZipDirectory SourceDirectory="$(BuildDir)"
+            DestinationFile="$(BuildDir)\..\$(ModFileName).zip" Overwrite="true" />
+
+        <RemoveDir Directories="$(BuildDir)" />
+        <RemoveDir Directories="$(Dir15)" />
+
     </Target>
 
-    <Target Name="ZipMod" AfterTargets="CopyToRimWorld" Condition="'$(MOD_PATH)' != ''">
-        <ZipDirectory SourceDirectory="$(MOD_PATH)\$(ModFileName)"
-            DestinationFile="$(MOD_PATH)\$(ModFileName).zip" Overwrite="true" />
+    <Target Name="PostClean" AfterTargets="Clean">
+        <!-- obj -->
+        <!-- <RemoveDir Directories="$(BaseIntermediateOutputPath)" /> -->
+        <!-- bin -->
+        <RemoveDir Directories="$(BaseOutputPath)" />
     </Target>
 
 </Project>

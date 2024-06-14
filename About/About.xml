@@ -1,14 +1,14 @@
 <ModMetaData>
   <name>AI Items</name>
   <author>Trojan</author>
-  <packageId>Trojan.AIItems</packageId>
+  <packageId>trojan.aiitems</packageId>
   <modVersion>0.0.1.0</modVersion>
   <supportedVersions>
-    <li>1.4</li>
     <li>1.5</li>
   </supportedVersions>
   <loadAfter>
     <li>brrainz.harmony</li>
+    <li>trojan.aicore</li>
   </loadAfter>
   <modDependencies>
     <li>
@@ -16,6 +16,13 @@
       <displayName>Harmony</displayName>
       <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
       <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+    </li>
+    <li>
+      <packageId>trojan.aicore</packageId>
+      <displayName>AI Core</displayName>
+      <steamWorkshopUrl>
+      </steamWorkshopUrl>
+      <downloadUrl>https://github.com/igoforth/RWAILib/releases/latest</downloadUrl>
     </li>
   </modDependencies>
   <description><![CDATA[<b><color=orange>AI Items</color></b>
