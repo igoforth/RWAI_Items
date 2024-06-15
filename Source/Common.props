@@ -204,6 +204,7 @@
         <ItemGroup>
             <Copy15 Include="..\1.5\**" />
             <CopyAbout Include="..\About\**" />
+            <CopyLanguages Include="..\Languages\**" />
             <CopyLicense Include="..\LICENSE" />
             <CopyReadme Include="..\README.md" />
         </ItemGroup>
@@ -214,6 +215,8 @@
             DestinationFolder="$(BuildDir)\1.5\%(RecursiveDir)" />
         <Copy SourceFiles="@(CopyAbout)"
             DestinationFolder="$(BuildDir)\About\%(RecursiveDir)" />
+        <Copy SourceFiles="@(CopyLanguages)"
+            DestinationFolder="$(BuildDir)\Languages\%(RecursiveDir)" />
         <Copy SourceFiles="@(CopyLicense)"
             DestinationFolder="$(BuildDir)" />
         <Copy SourceFiles="@(CopyReadme)"

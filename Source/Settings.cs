@@ -11,7 +11,7 @@ public partial class AIItemsSettings : ModSettings
 
     public static void DoWindowContents(Rect inRect)
     {
-        Widgets.Label(inRect, "No settings yet!");
+        Widgets.Label(inRect, "RWAI_Items_NoSettings".Translate());
     }
 
 }
