@@ -1,7 +1,7 @@
 <Project>
 
 	<PropertyGroup>
-		<ModName>AI Items</ModName>
+		<ModName>RimWorldAI Items</ModName>
 		<ModFileName>AIItems</ModFileName>
 		<Repository>https://github.com/igoforth/RWAI_Items</Repository>
 		<ModVersion>0.0.1.0</ModVersion>

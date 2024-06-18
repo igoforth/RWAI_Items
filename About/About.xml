@@ -1,5 +1,5 @@
 <ModMetaData>
-  <name>AI Items</name>
+  <name>RimWorldAI Items</name>
   <author>Trojan</author>
   <packageId>trojan.aiitems</packageId>
   <modVersion>0.0.1.0</modVersion>
@@ -19,13 +19,22 @@
     </li>
     <li>
       <packageId>trojan.aicore</packageId>
-      <displayName>AI Core</displayName>
+      <displayName>RimWorldAI Core</displayName>
       <steamWorkshopUrl>
       </steamWorkshopUrl>
       <downloadUrl>https://github.com/igoforth/RWAILib/releases/latest</downloadUrl>
     </li>
   </modDependencies>
-  <description><![CDATA[<b><color=orange>AI Items</color></b>
+  <description><![CDATA[<b><color=orange>RimWorldAI Items</color></b>
 
-Module for AI Interaction with Rimworld Items.]]></description>
+Expansion for AI Interaction with RimWorld Items. To get started, just open an item description, and an AI-generated version will replace it!
+
+用于AI与RimWorld物品互动的扩展。使用时只需打开物品描述,AI生成的版本就会替换原有描述!
+
+Расширение для взаимодействия ИИ с предметами RimWorld. Чтобы начать, просто откройте описание предмета, и его заменит версия, сгенерированная ИИ!
+
+Trojan
+Discord: igoforth
+Steam: TrojanRL
+GitHub: igoforth]]></description>
 </ModMetaData>
